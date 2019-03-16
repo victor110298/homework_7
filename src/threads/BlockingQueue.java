@@ -2,7 +2,9 @@ package threads;
 
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class BlockingQueue {private static java.util.concurrent.BlockingQueue<String> blockingQueue=new PriorityBlockingQueue<>();
+public class BlockingQueue {
+    private static java.util.concurrent.BlockingQueue<String> blockingQueue = new PriorityBlockingQueue<>();
+
     public static void main(String[] args) throws InterruptedException {
         new Thread(() -> {
             try {
@@ -12,6 +14,6 @@ public class BlockingQueue {private static java.util.concurrent.BlockingQueue<St
             }
         }).start();
         Thread.sleep(3000);
-        new Thread(()-> System.out.println(blockingQueue.add("something"))).start();
+        new Thread(() -> System.out.println(blockingQueue.add("something"))).start();
     }
 }
