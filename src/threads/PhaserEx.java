@@ -9,10 +9,12 @@ public class PhaserEx {
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 1; i < 5; i++) {
-            if ((int) (Math.random() * 2) > 0)
+            if ((int) (Math.random() * 2) > 0) {
                 passengers.add(new Passenger(i, i + 1));
-            if ((int) (Math.random() * 2) > 0)
+            }
+            if ((int) (Math.random() * 2) > 0) {
                 passengers.add(new Passenger(i, 5));
+            }
         }
         for (int i = 0; i < 7; i++) {
             switch (i) {
@@ -33,12 +35,13 @@ public class PhaserEx {
     public static void defaultSentence() {
         int currentBusStop = PHASER.getPhase();
         System.out.println("Bus stop № " + currentBusStop);
-        for (Passenger p : passengers)
+        for (Passenger p : passengers) {
             if (p.departure == currentBusStop) {
                 PHASER.register();
                 p.start();
             }
-        PHASER.arriveAndAwaitAdvance();
+            PHASER.arriveAndAwaitAdvance();
+        }
     }
 
     public static class Passenger extends Thread {
@@ -60,15 +63,13 @@ public class PhaserEx {
                 Thread.sleep(1);
                 System.out.println(this + " leave bus");
                 PHASER.arriveAndDeregister();
-            }  catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
         @Override
         public String toString() {
             return "Passenger{" + departure + " -> " + destination + '}';
         }
     }
 }
-

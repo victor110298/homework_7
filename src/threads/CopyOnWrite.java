@@ -4,7 +4,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CopyOnWrite {
     private static CopyOnWriteArrayList<String> copy = new CopyOnWriteArrayList<>();
-
     public static void main(String[] args) {
         new Thread(() -> {
             copy.add("1 element");
@@ -18,4 +17,3 @@ public class CopyOnWrite {
         }).start();
     }
 }
-

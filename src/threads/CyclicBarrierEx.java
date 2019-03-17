@@ -11,23 +11,20 @@ public class CyclicBarrierEx {
         @Override
         public void run() {
             try {
-                System.out.println(
-                        "\nCar is coming");
+                System.out.println("Car is coming");
                 Thread.sleep(500);
-                System.out.println(
-                        "Ferry finished road\n");
+                System.out.println("Ferry finished road");
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
 
     public static class Car implements Runnable {
         private int carNumber;
-
         public Car(int carNumber) {
             this.carNumber = carNumber;
         }
-
         @Override
         public void run() {
             try {
@@ -40,8 +37,7 @@ public class CyclicBarrierEx {
         }
     }
 
-    public static void main(String[] args)
-            throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         FerryBarrier = new CyclicBarrier(FerryBoat_size,
                 new FerryBoat());
         for (int i = 1; i < 5; i++) {
