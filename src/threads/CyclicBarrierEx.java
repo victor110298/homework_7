@@ -4,24 +4,49 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class CyclicBarrierEx {
-    private static CyclicBarrier cyclic = new CyclicBarrier(2,new Thread(()-> System.out.println("Let's go")));
-    public static void main(String[] args) {
-        new Service().start();
-        new Service().start();
-    }
-    static class Service extends Thread{
+    private static CyclicBarrier FerryBarrier;
+    private static final int FerryBoat_size = 3;
+
+    public static class FerryBoat implements Runnable {
         @Override
-        public void run(){
+        public void run() {
             try {
-                System.out.println("Waiting");
-                cyclic.await();
+                System.out.println(
+                        "\nCar is coming");
+                Thread.sleep(500);
+                System.out.println(
+                        "Ferry finished road\n");
             } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (BrokenBarrierException e) {
+            }
+        }
+    }
+
+    public static class Car implements Runnable {
+        private int carNumber;
+
+        public Car(int carNumber) {
+            this.carNumber = carNumber;
+        }
+
+        @Override
+        public void run() {
+            try {
+                System.out.println("Coming car number " + carNumber);
+                FerryBarrier.await();
+                System.out.println("Keep going car number " + carNumber);
+            } catch (InterruptedException | BrokenBarrierException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
+    public static void main(String[] args)
+            throws InterruptedException {
+        FerryBarrier = new CyclicBarrier(FerryBoat_size,
+                new FerryBoat());
+        for (int i = 1; i < 5; i++) {
+            new Thread(new Car(i)).start();
+            Thread.sleep(400);
+        }
+    }
 }

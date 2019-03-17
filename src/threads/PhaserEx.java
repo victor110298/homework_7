@@ -5,18 +5,15 @@ import java.util.concurrent.Phaser;
 
 public class PhaserEx {
     private static final Phaser PHASER = new Phaser(1);
+    static ArrayList<Passenger> passengers = new ArrayList<>();
 
     public static void main(String[] args) throws InterruptedException {
-        ArrayList<Passenger> passengers = new ArrayList<>();
-
         for (int i = 1; i < 5; i++) {
             if ((int) (Math.random() * 2) > 0)
                 passengers.add(new Passenger(i, i + 1));
-
             if ((int) (Math.random() * 2) > 0)
                 passengers.add(new Passenger(i, 5));
         }
-
         for (int i = 0; i < 7; i++) {
             switch (i) {
                 case 0:
@@ -24,22 +21,24 @@ public class PhaserEx {
                     PHASER.arrive();
                     break;
                 case 6:
-                    System.out.println("Bus come to part");
+                    System.out.println("Bus came to park");
                     PHASER.arriveAndDeregister();
                     break;
                 default:
-                    int currentBusStop = PHASER.getPhase();
-                    System.out.println("Bus stop № " + currentBusStop);
-
-                    for (Passenger p : passengers)
-                        if (p.departure == currentBusStop) {
-                            PHASER.register();
-                            p.start();
-                        }
-
-                    PHASER.arriveAndAwaitAdvance();
+                    defaultSentence();
             }
         }
+    }
+
+    public static void defaultSentence() {
+        int currentBusStop = PHASER.getPhase();
+        System.out.println("Bus stop № " + currentBusStop);
+        for (Passenger p : passengers)
+            if (p.departure == currentBusStop) {
+                PHASER.register();
+                p.start();
+            }
+        PHASER.arriveAndAwaitAdvance();
     }
 
     public static class Passenger extends Thread {
@@ -56,22 +55,19 @@ public class PhaserEx {
         public void run() {
             try {
                 System.out.println(this + " sit in bus");
-
                 while (PHASER.getPhase() < destination)
                     PHASER.arriveAndAwaitAdvance();
-
                 Thread.sleep(1);
                 System.out.println(this + " leave bus");
                 PHASER.arriveAndDeregister();
-            } catch (InterruptedException e) {
+            }  catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
         @Override
         public String toString() {
             return "Passenger{" + departure + " -> " + destination + '}';
-
-
         }
     }
 }

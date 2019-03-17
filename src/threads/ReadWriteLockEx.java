@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ReadWriteLockEx<E> {
+
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     private final Lock readLock = readWriteLock.readLock();
@@ -34,7 +35,9 @@ public class ReadWriteLockEx<E> {
             readLock.unlock();
         }
     }
+}
 
+class Main {
     public static void main(String[] args) {
         ReadWriteLockEx<String> rwl = new ReadWriteLockEx();
         rwl.set("1");

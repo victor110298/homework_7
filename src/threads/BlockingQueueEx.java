@@ -1,19 +1,20 @@
 package threads;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class BlockingQueue {
-    private static java.util.concurrent.BlockingQueue<String> blockingQueue = new PriorityBlockingQueue<>();
+public class BlockingQueueEx {
+    private static BlockingQueue<String> bqe = new PriorityBlockingQueue<>();
 
     public static void main(String[] args) throws InterruptedException {
         new Thread(() -> {
             try {
-                System.out.println(blockingQueue.take());
+                System.out.println(bqe.take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
         Thread.sleep(3000);
-        new Thread(() -> System.out.println(blockingQueue.add("something"))).start();
+        new Thread(() -> System.out.println(bqe.add("something"))).start();
     }
 }
